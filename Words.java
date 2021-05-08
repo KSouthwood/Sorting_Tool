@@ -1,15 +1,20 @@
 package sorting;
 
-public class Words extends StringData{
+public class Words extends Data{
     Words(Mode mode) {
         super(mode);
     }
 
     void generate() {
-        var map = mapValues(readFromScanner());
-        var max = findMax(map.keySet());
-        System.out.printf("Total words: %d%n", size);
-        System.out.printf("The longest word: %s (%d time(s), %3d%%).%n",
-                max, map.get(max), percentage(map.get(max), size));
+        var input = readFromScanner();
+
+        if (mode.isSorted()) {
+            String[] array = new String[0];
+            input.toArray(array);
+            mergeSort(array, 0, array.length);
+            printResultsSorted(array, "words");
+        } else {
+            printResultsByCount(mapValues(input), "words");
+        }
     }
 }

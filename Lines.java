@@ -1,15 +1,20 @@
 package sorting;
 
-public class Lines extends StringData{
+public class Lines extends Data{
     Lines(Mode mode) {
         super(mode);
     }
 
     void generate() {
-        var map = mapValues(readFromScanner());
-        var max = findMax(map.keySet());
-        System.out.printf("Total lines: %d%n", size);
-        System.out.printf("The longest line:%n%s%n(%d time(s), %3d%%).%n",
-                max, map.get(max), percentage(map.get(max), size));
+        var input = readFromScanner();
+
+        if (mode.isSorted()) {
+            var array = input.toArray(new String[0]);
+            mergeSort(array, 0, array.length);
+            printResultsSorted(array, "lines");
+        } else
+        {
+            printResultsByCount(mapValues(input), "lines");
+        }
     }
 }

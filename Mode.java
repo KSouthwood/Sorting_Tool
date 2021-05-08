@@ -1,19 +1,21 @@
 package sorting;
 
 public enum Mode {
-    LONGS("long", true, true),
-    WORDS("word", true, false),
-    LINES("line", false, false),
-    SORT("sort", true, true);
+    LONG_COUNT("long", true, false),
+    LONG_SORT("long", true, true),
+    WORD_COUNT("word", true, false),
+    WORD_SORT("word", true, true),
+    LINE_COUNT("line", false, false),
+    LINE_SORT("line", false, true);
 
     private final String mode;
     private final boolean split;    // do we split the input lines?
-    private final boolean numbers;
+    private final boolean sorted;
 
-    Mode(String mode, boolean split, boolean numbers) {
+    Mode(String mode, boolean split, boolean sorted) {
         this.mode = mode;
         this.split = split;
-        this.numbers = numbers;
+        this.sorted = sorted;
     }
 
     public String getMode() {
@@ -24,7 +26,7 @@ public enum Mode {
         return split;
     }
 
-    public boolean isNumbers() {
-        return numbers;
+    public boolean isSorted() {
+        return sorted;
     }
 }
