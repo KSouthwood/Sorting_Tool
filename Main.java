@@ -28,37 +28,43 @@ public class Main {
     private static Mode parseArgs(String[] args) {
         // set the default state
         boolean sorted = true;
-        String  mode   = "word";
+        String mode = "word";
 
         for (int index = 0; index < args.length; index++) {
-            if (args[index].equals("-sortingType")) {
-                switch (args[++index]) {
-                    case "byCount":
-                        sorted = false;
-                        break;
-                    case "-dataType":   // in case we have option but no argument
-                        index--;        // decrement index for the loop and fall through
-                    case "natural":     // to set the default mode
-                    default:
-                        sorted = true;
-                        break;
-
-                }
-            }
-
-            if (args[index].equals("-dataType")) {
-                switch (args[++index]) {
-                    case "long":
-                    case "line":
-                        mode = args[index];
-                        break;
-                    case "-sortingType":    // in case we have option but no argument
-                        index--;            // decrement index for the loop and fall through
-                    case "word":            // to set the default mode
-                    default:
-                        mode = "word";
-                        break;
-                }
+            switch (args[index]) {
+                case "-sortingType":
+                    switch (index + 1 < args.length ? args[++index] : "") {
+                        case "byCount":
+                            sorted = false;
+                            break;
+                        case "natural":
+                            sorted = true;
+                            break;
+                        case "-dataType":   // handle case where dataType follows sortingType without
+                            index--;        // specifying a valid option
+                        default:
+                            System.out.println("No sorting type defined!");
+                            break;
+                    }
+                    break;
+                case "-dataType":
+                    switch (index + 1 < args.length ? args[++index] : "") {
+                        case "long":
+                        case "line":
+                        case "word":
+                            mode = args[index];
+                            break;
+                        case "-sortingType":    // handle case where sortingType follows dataType without
+                            index--;            // specifying a valid option
+                        default:
+                            System.out.println("No data type defined!");
+                            break;
+                    }
+                    break;
+                default:
+                    System.out.printf("\"%s\" is not a valid parameter. It will be skipped.%n",
+                            args[index]);
+                    break;
             }
         }
 

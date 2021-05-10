@@ -9,10 +9,8 @@ public class Words extends Data{
         var input = readFromScanner();
 
         if (mode.isSorted()) {
-            String[] array = new String[0];
-            input.toArray(array);
-            mergeSort(array, 0, array.length);
-            printResultsSorted(array, "words");
+            mergeSort(input, 0, input.length);
+            printResultsSorted(input, "words");
         } else {
             printResultsByCount(mapValues(input), "words");
         }

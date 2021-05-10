@@ -9,9 +9,8 @@ public class Lines extends Data{
         var input = readFromScanner();
 
         if (mode.isSorted()) {
-            var array = input.toArray(new String[0]);
-            mergeSort(array, 0, array.length);
-            printResultsSorted(array, "lines");
+            mergeSort(input, 0, input.length);
+            printResultsSorted(input, "lines");
         } else
         {
             printResultsByCount(mapValues(input), "lines");

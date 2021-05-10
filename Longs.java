@@ -1,7 +1,6 @@
 package sorting;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class Longs extends Data {
     Longs(Mode mode) {
@@ -61,13 +60,22 @@ public class Longs extends Data {
     void generate() {
         var input = readFromScanner();
 
+        ArrayList<Long> temp = new ArrayList<>();
+        for (var entry : input) {
+            try {
+                temp.add(Long.parseLong(entry));
+            } catch (NumberFormatException e) {
+                System.out.printf("\"%s\" is not a long. It will be skipped.%n", entry);
+            }
+        }
+        var array = temp.toArray(new Long[0]);
+        size = array.length;
+
         if (mode.isSorted()) {
-            var array = input.stream().map(Long::valueOf).toArray(Long[]::new);
             mergeSort(array, 0, array.length);
             printResultsSorted(array, "numbers");
         } else {
-            var longs = input.stream().map(Long::valueOf).collect(Collectors.toCollection(ArrayList::new));
-            var map = mapValues(longs);
+            var map = mapValues(array);
             printResultsByCount(map, "numbers");
         }
     }

@@ -15,7 +15,7 @@ class Data {
         return (int) (occurrences / (double) total * 100);
     }
 
-    ArrayList<String> readFromScanner() {
+    String[] readFromScanner() {
         final Scanner scanner = new Scanner(System.in);
 
         String regex = mode.isSplit() ? "\\s+" : "";
@@ -30,10 +30,10 @@ class Data {
 
         size = inputs.size();
 
-        return inputs;
+        return inputs.toArray(new String[0]);
     }
 
-    <T> Map<T, Integer> mapValues(ArrayList<T> input) {
+    <T> Map<T, Integer> mapValues(T[] input) {
         Map<T, Integer> hashMap = new TreeMap<>();
         for (var entry : input) {
             hashMap.put(entry, hashMap.getOrDefault(entry, 0) + 1);
