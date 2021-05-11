@@ -3,8 +3,8 @@ package sorting;
 import java.util.ArrayList;
 
 public class Longs extends Data {
-    Longs(Mode mode) {
-        super(mode);
+    Longs(Arguments arg) {
+        super(arg);
     }
 
     private void mergeSort(Long[] array, int leftIncl, int rightExcl) {
@@ -58,7 +58,7 @@ public class Longs extends Data {
     }
 
     void generate() {
-        var input = readFromScanner();
+        var input = readFromSource(true);
 
         ArrayList<Long> temp = new ArrayList<>();
         for (var entry : input) {
@@ -71,7 +71,7 @@ public class Longs extends Data {
         var array = temp.toArray(new Long[0]);
         size = array.length;
 
-        if (mode.isSorted()) {
+        if (isSorted) {
             mergeSort(array, 0, array.length);
             printResultsSorted(array, "numbers");
         } else {

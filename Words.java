@@ -1,14 +1,14 @@
 package sorting;
 
 public class Words extends Data{
-    Words(Mode mode) {
-        super(mode);
+    Words(Arguments arg) {
+        super(arg);
     }
 
     void generate() {
-        var input = readFromScanner();
+        var input = readFromSource(true);
 
-        if (mode.isSorted()) {
+        if (isSorted) {
             mergeSort(input, 0, input.length);
             printResultsSorted(input, "words");
         } else {

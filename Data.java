@@ -1,36 +1,42 @@
 package sorting;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 class Data {
-    Mode mode;
     int size;
+    String dataType;
+    boolean isSorted;
+    BufferedReader inputSource;
+    BufferedWriter outputSource;
 
-    public Data(Mode mode) {
-        this.mode = mode;
+    public Data(Arguments arg) {
+        this.dataType = arg.getDataType();
+        this.isSorted = arg.isSortMode();
+        this.inputSource = arg.getInputSource();
+        this.outputSource = arg.getOutputSource();
     }
 
     static int percentage(int occurrences, int total) {
         return (int) (occurrences / (double) total * 100);
     }
 
-    String[] readFromScanner() {
-        final Scanner scanner = new Scanner(System.in);
+    String[] readFromSource(boolean isSplit) {
+        List<String> array = new ArrayList<>();
+        String[] input = inputSource.lines().toArray(String[]::new);
 
-        String regex = mode.isSplit() ? "\\s+" : "";
-        int limit = mode.isSplit() ? 0 : 1;
-
-        ArrayList<String> inputs = new ArrayList<>();
-
-        while (scanner.hasNext()) {
-            String input = scanner.nextLine();
-            Collections.addAll(inputs, input.split(regex, limit));
+        if (isSplit) {
+            for (var line : input) {
+                Collections.addAll(array, line.split("\\s+"));
+            }
         }
 
-        size = inputs.size();
+        size = isSplit ? array.size() : input.length;
 
-        return inputs.toArray(new String[0]);
+        return isSplit ? array.toArray(new String[0]) : input;
     }
 
     <T> Map<T, Integer> mapValues(T[] input) {
@@ -54,19 +60,29 @@ class Data {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (e1, e2) -> e1, LinkedHashMap::new));
 
-        System.out.printf("Total %s: %d%n", output, size);
-        for (var key : linkedHashMap.keySet()) {
-            System.out.printf("%s: %d time(s), %3d%%%n",
-                    key, map.get(key), percentage(map.get(key), size));
+        try {
+            outputSource.write(String.format("Total %s: %d%n", output, size));
+            for (var key : linkedHashMap.keySet()) {
+                outputSource.write(String.format("%s: %d time(s), %3d%%%n",
+                        key, map.get(key), percentage(map.get(key), size)));
+            }
+            outputSource.flush();
+        } catch (IOException e) {
+            System.out.println("I/O Error: " + e);
         }
     }
 
     <T> void printResultsSorted(T[] array, String output) {
-        String separator = mode.isSplit() ? " " : "\n";
-        System.out.printf("Total %s: %d%n", output, size);
-        System.out.printf("Sorted data:%s", separator);
-        for (var entry : array) {
-            System.out.printf("%s%s", entry, separator);
+        String separator = dataType.equals("line") ? "\n" : " ";
+        try {
+            outputSource.write(String.format("Total %s: %d%n", output, size));
+            outputSource.write(String.format("Sorted data:%s", separator));
+            for (var entry : array) {
+                outputSource.write(String.format("%s%s", entry, separator));
+            }
+            outputSource.flush();
+        } catch (IOException e) {
+            System.out.println("I/O error: " + e);
         }
     }
 
